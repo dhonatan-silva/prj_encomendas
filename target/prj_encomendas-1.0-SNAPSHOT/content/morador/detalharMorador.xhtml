@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <ui:composition template="/template/layout.xhtml">	
+            <ui:define name="content">
+                <h:body>
+
+                    <h:form id="form-detalhar-morador">
+                        <div class="row-cols-1" style="margin-top: 15px;">
+                            <h5>Dados do morador</h5>
+                            <hr style="margin-top: -5px;"/>
+                        </div>
+
+                        <div class="row" style="align-items: center">
+                            <div class="col-md-3">
+                                <h:graphicImage id="img-user-default" class="img-fluid img-thumbnail" style="height: 240px; width: 100%" rendered="#{detalharMoradorBean.helper.foto == null}" library="img" name="default-user-image.png"/>
+                                <h:graphicImage id="img-user" class="img-fluid img-thumbnail" style="height: 240px; width: 100%" rendered="#{detalharMoradorBean.helper.foto != null}" value="#{detalharMoradorBean.helper.foto}"/>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="row">
+                                    <h:panelGroup  rendered="#{detalharMoradorBean.helper.apartamento == null}">
+                                        <div class="col-md">
+                                            <h:outputLabel class="alert alert-warning form-control" value="Morador sem vinculo com nenhum apartamento"/>
+                                        </div>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{detalharMoradorBean.helper.apartamento != null}">
+                                        <div class="col-md">
+                                            <h:outputLabel value="Bloco"/>
+                                            <h:outputLabel class="form-control" value="#{detalharMoradorBean.helper.torre.descricao}"/>
+                                        </div>
+                                        <div class="col-md">
+                                            <h:outputLabel value="Apartamento"/>
+                                            <h:outputLabel class="form-control" value="#{detalharMoradorBean.helper.apartamento.numero}"/>
+                                        </div>
+                                    </h:panelGroup>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md">
+                                        <h:outputLabel value="Nome"/>
+                                        <h:outputLabel class="form-control" value="#{detalharMoradorBean.helper.morador.nome}"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md">
+                                        <h:outputLabel value="E-mail"/>
+                                        <h:inputText class="form-control" value="#{detalharMoradorBean.helper.morador.email}"/>
+                                    </div>
+                                    <div class="col-md">
+                                        <h:outputLabel value="Celular"/>
+                                        <h:outputLabel  class="form-control" value="#{detalharMoradorBean.helper.morador.celular}">
+                                            <f:converter converterId="maskCelular"/>
+                                        </h:outputLabel>
+                                    </div>
+                                    <div class="col-md">
+                                        <h:outputLabel value="Telefone"/>
+                                        <h:outputLabel  class="form-control" value="#{detalharMoradorBean.helper.morador.telefone}">
+                                            <f:converter converterId="maskTelefone"/>
+                                        </h:outputLabel>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md">
+                                        <h:outputLabel value="Data de nascimento"/>
+                                        <h:outputLabel class="form-control" value="#{detalharMoradorBean.helper.morador.dataNascimento}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputLabel>
+                                    </div>
+                                    <div class="col-md">
+                                        <h:outputLabel value="RG"/>
+                                        <h:outputLabel class="form-control mascara-rg" value="#{detalharMoradorBean.helper.morador.rg}">
+                                            <f:converter converterId="maskRg"/>
+                                        </h:outputLabel>
+                                    </div>
+                                    <div class="col-md">
+                                        <h:outputLabel value="CPF"/>
+                                        <h:outputLabel class="form-control"  value="#{detalharMoradorBean.helper.morador.cpf}">
+                                            <f:converter converterId="maskCpf"/>
+                                        </h:outputLabel>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row-cols-1" style="margin-top: 15px;">
+                            <h5>Dados do veículo</h5>
+                            <hr style="margin-top: -5px;"/>
+                        </div>
+
+                        <h:panelGroup rendered="#{detalharMoradorBean.helper.veiculo != null}">
+                            <div class="row">
+                                <div class="col-md">
+                                    <h:outputLabel value="Tipo"/>
+                                    <h:outputLabel class="form-control" value="#{detalharMoradorBean.helper.veiculo.tipo == 1 ? 'Moto' : 'Carro'}"/>
+                                </div>
+                                <div class="col-md">
+                                    <h:outputLabel value="Modelo"/>
+                                    <h:outputLabel class="form-control" value="#{detalharMoradorBean.helper.veiculo.modelo}"/>
+                                </div>
+                                <div class="col-md">
+                                    <h:outputLabel value="Marca"/>
+                                    <h:outputLabel class="form-control" value="#{detalharMoradorBean.helper.veiculo.marca}"/>
+                                </div>
+                                <div class="col-md">
+                                    <h:outputLabel value="Cor"/>
+                                    <h:outputLabel class="form-control" value="#{detalharMoradorBean.helper.veiculo.cor}"/>
+                                </div>
+                                <div class="col-md">
+                                    <h:outputLabel value="Placa"/>
+                                    <h:outputLabel class="form-control" value="#{detalharMoradorBean.helper.veiculo.placa}"/>
+                                </div>
+                            </div>
+                        </h:panelGroup>
+
+                        <h:panelGroup rendered="#{detalharMoradorBean.helper.veiculo == null}">
+                            <h:outputLabel value="Sem veículo cadastrado"/>
+                        </h:panelGroup>
+
+                        <div class="row-cols-1">
+                            <hr style="margin-bottom: 5px;"/>
+                        </div>
+
+                        <div class="row row-cols-2">
+                            <div class="col force-left">
+                                <h:commandButton id="btn-voltar" class="btn btn-primary" value="Voltar" action="#{detalharMoradorBean.voltar()}"/> 
+                            </div>
+                        </div>
+
+                    </h:form>
+                </h:body>
+            </ui:define>	
+        </ui:composition>
+    </ui:composition>
+</html>
+

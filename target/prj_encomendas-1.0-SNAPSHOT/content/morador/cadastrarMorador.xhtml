@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <ui:composition template="/template/layout.xhtml">	
+            <ui:define name="content">
+                <h:body onload="configure();validarForm();">
+
+                    <h:form id="form-cadastrar-morador">
+                        <div class="row-cols-1" style="margin-top: 15px;">
+                            <h5>Cadastrar morador</h5>
+                            <hr style="margin-top: -5px;"/>
+                        </div>
+
+                        <div class="row" style="align-items: center">
+                            <div class="col-md-3">
+                                <h:inputText id="id-foto" value="#{cadastrarMoradorBean.helper.foto}" style="display: none"/>
+                                <h:graphicImage id="img-user-default" class="img-fluid img-thumbnail" style="height: 240px; width: 100%" rendered="#{cadastrarMoradorBean.helper.foto == null}" library="img" name="default-user-image.png"/>
+                                <h:graphicImage id="img-user" class="img-fluid img-thumbnail"  style="height: 240px; width: 100%" rendered="#{cadastrarMoradorBean.helper.foto != null}" value="#{cadastrarMoradorBean.helper.foto}"/>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="row">
+                                    <div class="col-md">
+                                        <h:outputLabel value="Nome"/>
+                                        <h:inputText id="id-nome" class="form-control toUpperCase" value="#{cadastrarMoradorBean.helper.morador.nome}" maxlength="50"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md">
+                                        <h:outputLabel value="E-mail"/>
+                                        <h:inputText id="id-email" class="form-control toLowerCase" value="#{cadastrarMoradorBean.helper.morador.email}" maxlength="40"/>
+                                    </div>
+                                    <div class="col-md">
+                                        <h:outputLabel value="Celular"/>
+                                        <h:inputText id="id-celular" class="form-control" value="#{cadastrarMoradorBean.helper.morador.celular}">
+                                            <f:converter converterId="maskCelular"/>
+                                        </h:inputText>
+                                    </div>
+                                    <div class="col-md">
+                                        <h:outputLabel value="Telefone"/>
+                                        <h:inputText id="id-telefone" class="form-control" value="#{cadastrarMoradorBean.helper.morador.telefone}">
+                                            <f:converter converterId="maskTelefone"/>
+                                        </h:inputText>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md">
+                                        <h:outputLabel value="Data de nascimento"/>
+                                        <h:inputText id="id-nascimento" class="form-control" value="#{cadastrarMoradorBean.helper.morador.dataNascimento}">
+                                            <f:converter converterId="maskDate"/>
+                                        </h:inputText>
+                                    </div>
+                                    <div class="col-md">
+                                        <h:outputLabel value="RG"/>
+                                        <h:inputText id="id-rg" class="form-control mascara-rg" value="#{cadastrarMoradorBean.helper.morador.rg}">
+                                            <f:converter converterId="maskRg"/>
+                                        </h:inputText>
+                                    </div>
+                                    <div class="col-md">
+                                        <h:outputLabel value="CPF"/>
+                                        <h:inputText id="id-cpf" class="form-control"  value="#{cadastrarMoradorBean.helper.morador.cpf}" maxlength="14">
+                                            <f:converter converterId="maskCpf"/>
+                                        </h:inputText>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row-cols-1" style="margin-top: 15px;">
+                            <h5>Dados do veículo</h5>
+                            <hr style="margin-top: -5px;"/>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md">
+                                <h:outputLabel value="Tipo"/>
+                                <h:selectOneMenu class="form-select form-select" value="#{cadastrarMoradorBean.helper.tipoSeleciondado}">
+                                    <f:selectItems value="#{cadastrarMoradorBean.helper.listaTipo}"/>
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-md">
+                                <h:outputLabel value="Marca"/>
+                                <h:inputText id="id-marca" class="form-control toUpperCase" maxlength="20" value="#{cadastrarMoradorBean.helper.veiculo.marca}"/>
+                            </div>
+                            <div class="col-md">
+                                <h:outputLabel value="Modelo"/>
+                                <h:inputText id="id-modelo" class="form-control toUpperCase" maxlength="20" value="#{cadastrarMoradorBean.helper.veiculo.modelo}"/>
+                            </div>
+                            <div class="col-md">
+                                <h:outputLabel value="Cor"/>
+                                <h:inputText id="id-cor" class="form-control toUpperCase" maxlength="10" value="#{cadastrarMoradorBean.helper.veiculo.cor}"/>
+                            </div>
+                            <div class="col-md">
+                                <h:outputLabel value="Placa"/>
+                                <h:inputText id="id-placa" class="form-control toUpperCase" value="#{cadastrarMoradorBean.helper.veiculo.placa}"/>
+                            </div>
+                        </div>
+
+                        <div class="row-cols-1">
+                            <hr style="margin-bottom: 5px;"/>
+                        </div>
+
+                        <div class="row justify-content-between" style="margin-top: 5px;">
+                            <div class="col force-left d-none d-md-block d-lg-block">
+                                <h:commandButton id="btn-voltar" class="btn btn-primary" value="Voltar" action="#{cadastrarMoradorBean.voltar()}"/> 
+                            </div>
+                            <div class="col force-right ">
+                                <h:commandButton id="btn-salvar" class="btn btn-primary" value="Salvar" actionListener="#{cadastrarMoradorBean.salvar()}" />
+                            </div>
+                        </div>
+
+                        <!-- Modal foto -->
+                        <div class="modal fade" id="modalFoto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Captura de foto</h5>
+                                        <button id="btn-off-camera" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="desligarCamera();"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <figure class="container-img">
+                                            <div id="my_camera"></div>
+                                            <h:graphicImage id="img-user-modal" width="320" height="240" library="img" name="default-user-image.png"/>
+                                            <figcaption class="figure-caption">A caption for the above image.</figcaption>
+                                        </figure>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" id="btn-snap-camera" class="btn btn-primary" disabled="true" onClick="tirarFoto();">Tirar Foto</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </h:form>
+                </h:body>
+
+                <h:outputScript library="js" name="webcam.min.js"/>
+                <script type="text/javascript">
+                    /*<![CDATA[*/
+
+                    var camera = document.querySelector("#my_camera");
+                    var img = document.querySelector("#form-alterar-morador\\:img-user-modal");
+
+                    Webcam.set({
+                        width: 320,
+                        height: 240,
+                        image_format: 'jpeg',
+                        jpeg_quality: 90
+                    });
+
+                    var img = document.querySelector("#form-cadastrar-morador\\:img-user-default");
+                    img.addEventListener("click", function () {
+                        var myModal = new bootstrap.Modal(document.querySelector("#modalFoto"), {});
+                        myModal.show();
+                        ligarCamera();
+                    });
+
+
+                    function ligarCamera() {
+                        var btnSnapShot = document.querySelector("#btn-snap-camera");
+                        var camera = document.querySelector("#my_camera");
+                        var img = document.querySelector("#form-cadastrar-morador\\:img-user-modal");
+                        btnSnapShot.disabled = false;
+                        camera.classList.remove("btn-invisibily");
+                        img.classList.add("btn-invisibily");
+                        Webcam.attach('#my_camera');
+                    }
+
+                    function desligarCamera() {
+                        var btnSnapShot = document.querySelector("#btn-snap-camera");
+                        var camera = document.querySelector("#my_camera");
+                        var img = document.querySelector("#form-cadastrar-morador\\:img-user-modal");
+                        btnSnapShot.disabled = true;
+                        camera.classList.add("btn-invisibily");
+                        img.classList.remove("btn-invisibily");
+                        Webcam.reset();
+                    }
+
+                    function tirarFoto() {
+                        // take snapshot and get image data
+                        Webcam.snap(function (data_uri) {
+                            // display results in page
+                            document.getElementById('my_camera').innerHTML =
+                                    '<img src="' + data_uri + '"/>';
+                            var foto = document.querySelector("#my_camera > img").src;
+                            if (foto !== null) {
+                                document.querySelector("#form-cadastrar-morador\\:id-foto").value = foto;
+                                document.querySelector("#form-cadastrar-morador\\:img-user-default").src = foto;
+                                desligarCamera();
+                                document.querySelector("#btn-off-camera").click();
+
+                            }
+                        });
+
+                    }
+                    /*]]>*/
+                </script>
+
+
+                <script type="text/javascript">
+                    /*<![CDATA[*/
+                    function configure() {
+                        $(document).ready(function () {
+                            $("#form-cadastrar-morador\\:id-cpf").mask("000.000.000-00");
+                            $("#form-cadastrar-morador\\:id-rg").mask("00.000.000-0");
+                            $("#form-cadastrar-morador\\:id-celular").mask("(00) 00000-0000");
+                            $("#form-cadastrar-morador\\:id-telefone").mask("(00) 0000-0000");
+                            $("#form-cadastrar-morador\\:id-placa").mask("AAA-0000");
+
+                            $("#form-cadastrar-morador\\:id-nome").attr("autocomplete", "off");
+                            $("#form-cadastrar-morador\\:id-email").attr("autocomplete", "off");
+                            $("#form-cadastrar-morador\\:id-celular").attr("autocomplete", "off");
+                            $("#form-cadastrar-morador\\:id-telefone").attr("autocomplete", "off");
+                            $("#form-cadastrar-morador\\:id-rg").attr("autocomplete", "off");
+                            $("#form-cadastrar-morador\\:id-cpf").attr("autocomplete", "off");
+                            $("#form-cadastrar-morador\\:id-nascimento").attr("autocomplete", "off");
+                            $("#form-cadastrar-morador\\:id-marca").attr("autocomplete", "off");
+                            $("#form-cadastrar-morador\\:id-modelo").attr("autocomplete", "off");
+                            $("#form-cadastrar-morador\\:id-cor").attr("autocomplete", "off");
+                            $("#form-cadastrar-morador\\:id-placa").attr("autocomplete", "off");
+
+                            $("#form-cadastrar-morador\\:id-nascimento").attr("type", "date");
+
+                        });
+                    }
+                    /*]]>*/
+                </script>
+
+
+                <script type="text/javascript">
+                    /*<![CDATA[*/
+
+                    function validarForm() {
+                        document.querySelector("#form-cadastrar-morador\\:btn-salvar").disabled = true;
+                        var nome = document.querySelector("#form-cadastrar-morador\\:id-nome");
+                        var nascimento = document.querySelector("#form-cadastrar-morador\\:id-nascimento");
+                        var email = document.querySelector("#form-cadastrar-morador\\:id-email");
+                        var celular = document.querySelector("#form-cadastrar-morador\\:id-celular");
+
+                        var validators = [
+                            new Validator(nome, "required", null, "O nome é um campo obrigatório"),
+                            new Validator(nome, "maxlength", 40, "O nome deve conter no máximo 10 letras"),
+                            new Validator(nome, "startBlankSpace", null, "O nome não pode iniciar com espaço"),
+                            new Validator(nome, "endBlankSpace", null, "O nome não pode terminar com espaço"),
+                            new Validator(nome, "moreThanName", null, "Informar nome e sobrenome"),
+                            new Validator(nascimento, "required", null, "Nascimento é um campo obrigatório"),
+                            new Validator(email, "required", null, "e-mail é um campo obrigatório"),
+                            new Validator(email, "validEmail", null, "e-mail inválido"),
+                            new Validator(celular, "required", null, "O celular é um campo obrigatório"),
+                            new Validator(celular, "minlength", 15, "Numero inválido")
+                        ];
+
+                        generateValidator(validators, callBack);
+                    }
+
+                    function callBack(valid) {
+                        var btn = document.querySelector("#form-cadastrar-morador\\:btn-salvar");
+                        btn.disabled = !valid;
+                    }
+                    /*]]>*/
+                </script>
+
+            </ui:define>	
+        </ui:composition>
+    </ui:composition>
+</html>

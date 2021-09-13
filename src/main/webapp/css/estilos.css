@@ -1,0 +1,52 @@
+.force-left {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.force-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.force-margin-title {
+    margin-top: 10px !important;
+}
+
+body .ui-datatable thead th, body .ui-datatable .ui-datatable-data > tr > td {
+    padding: 4px;
+}
+
+.toggle-row {
+    background: darkgrey;
+}
+
+.container-home {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 250px;
+}
+
+.container-img {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-invisibily {
+    display: none !important;
+}
+
+.my-color{
+    background: red
+}
+
+.bottom-buttons {
+    background: red
+}

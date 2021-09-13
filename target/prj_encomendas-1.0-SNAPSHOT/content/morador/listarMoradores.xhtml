@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <ui:composition template="/template/layout.xhtml">	
+            <ui:define name="content">
+                <h:body onload="configure();">
+
+                    <h:form id="form-listar-moradores">
+
+                        <div class="row-cols-1" style="margin-top: 15px;">
+                            <h5>Lista de Moradores</h5>
+                            <hr style="margin-top: -5px;"/>
+                        </div>
+
+                        <h:inputText id="codigo-selecionado" value="#{listarMoradoresBean.helper.codigoMorador}" style="display: none"/>
+
+                        <div class="table-responsive">
+                            <h:dataTable class="table table-bordered table-hover table align-middle" id="table-moradores" 
+                                         value="#{listarMoradoresBean.helper.listaMoradores}" 
+                                         var="morador">
+
+                                <h:column>
+                                    <f:facet name="header">Código</f:facet>
+                                        #{morador.id}
+                                </h:column>
+
+                                <h:column>
+                                    <f:facet name="header">Nome</f:facet>
+                                        #{morador.nome}
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">E-mail</f:facet>
+                                        #{morador.email}
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Celular</f:facet>
+                                        #{morador.celularFormatado}
+                                </h:column>
+                            </h:dataTable>
+                        </div>
+
+                        <nav id="id-pagination">
+                            <ul class="pagination pagination-sm justify-content-center">
+                                <li class="page-item"><a class="page-link" href="#" onclick="pageFirst();">Primeiro</a></li>
+                                <li class="page-item"><a class="page-link" href="#" onclick="pageBack();">Voltar</a></li>
+                                <li class="page-item"><a class="page-link" href="#" onclick="pageNext();">Próximo</a></li>
+                                <li class="page-item"><a class="page-link" href="#" onclick="pageLast();">Último</a></li>
+                            </ul>
+                        </nav>
+
+                        <div class="row-cols-1">
+                            <hr style="margin-bottom: 5px;"/>
+                        </div>
+
+                        <div class="row justify-content-between" style="margin-top: 5px;">
+                            <div class="col force-left d-none d-md-block d-lg-block">
+                                <h:commandButton class="btn btn-primary" value="Voltar" action="#{listarMoradoresBean.voltar()}"/> 
+                            </div>
+                            <div class="col force-right ">
+                                <h:commandButton class="btn btn-primary" style="margin-right: 5px" value="Novo" action="#{listarMoradoresBean.novo()}"/>
+                                <h:commandButton id="btn-detalhar" class="btn btn-primary" style="margin-right: 5px" value="Detalhar"  action="#{listarMoradoresBean.detalhar()}"/>
+                                <h:commandButton id="btn-alterar" class="btn btn-primary" style="margin-right: 5px" value="Alterar"  action="#{listarMoradoresBean.alterar()}"/>
+                                <button id="btn-excluir" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" disabled="true">Excluir</button>
+                            </div>
+                        </div>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Exclusão de morador</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Tem certeza que deseja excluir o registro ?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" id="btn-close-modal" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+                                            <h:commandButton class="btn btn-primary" value="Sim">
+                                                <f:ajax event="click" listener="#{listarMoradoresBean.excluir()}"/>
+                                            </h:commandButton>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                    </h:form>
+                </h:body>
+
+                <script type="text/javascript">
+                    /*<![CDATA[*/
+                    function configure() {
+                        $(document).ready(function () {
+                            $("#form-listar-moradores\\:btn-detalhar").prop("disabled", "true");
+                            $("#form-listar-moradores\\:btn-alterar").prop("disabled", "true");
+                            initPagination();
+                        });
+                    }
+                    /*]]>*/
+                </script>
+
+                <script type="text/javascript">
+
+                    /*<![CDATA[*/
+
+                    //MODAL
+                    var modal = document.querySelector("#exampleModal > div > div > div.modal-body");
+                    var table = document.querySelector("#form-listar-moradores\\:table-moradores");
+                    var rows = table.getElementsByTagName("tr");
+                    var btnDetalhar = document.querySelector("#form-listar-moradores\\:btn-detalhar");
+                    var btnAlterar = document.querySelector("#form-listar-moradores\\:btn-alterar");
+                    var btnExcluir = document.querySelector("#btn-excluir");
+                    var textCodigo = document.querySelector("#form-listar-moradores\\:codigo-selecionado");
+                    var morador = null;
+                    var codigoSelecionado = null;
+
+                    for (var i = 0; i < rows.length; i++) {
+                        var row = rows[i];
+
+                        row.addEventListener("click", function () {
+                            if (this.querySelector("td") !== null) {
+                                for (var i = 0; i < rows.length; i++) {
+                                    if (rows[i] !== this) {
+                                        rows[i].classList.remove("toggle-row");
+                                    } else {
+                                        this.classList.toggle("toggle-row");
+                                    }
+
+                                }
+
+                                if (this.classList.contains("toggle-row")) {
+                                    morador = this.querySelector("td:nth-child(2)").textContent;
+                                    codigoSelecionado = this.querySelector("td").textContent;
+                                    btnExcluir.disabled = false;
+                                    btnAlterar.disabled = false;
+                                    btnDetalhar.disabled = false;
+                                    textCodigo.value = codigoSelecionado;
+                                } else {
+                                    textCodigo = "";
+                                    btnExcluir.disabled = true;
+                                    btnAlterar.disabled = true;
+                                    btnDetalhar.disabled = true;
+                                    codigoSelecionado.value = "";
+                                }
+
+                                modal.innerHTML = "Tem certeza em excluir o morador " + morador + "?";
+                            }
+                        });
+                    }
+
+
+                    //PAGINAÇÃO
+                    var tbody = table.querySelectorAll("tbody > tr");
+                    var pageCurrent = 1;
+                    var itensPerPage = 8;
+                    var totalPages = tbody.length / itensPerPage;
+                    if (!Number.isInteger(totalPages)) {
+                        totalPages = Math.trunc(totalPages);
+                        totalPages += 1;
+                    }
+
+                    function initPagination() {
+                        if (tbody.length <= itensPerPage) {
+                            $("#id-pagination").css("display", "none");
+                        } else {
+                            $("#id-pagination").css("display", "block");
+                        }
+                    }
+
+                    function pageFirst() {
+                        pageCurrent = 1;
+                        movePage(pageCurrent);
+                    }
+
+                    function pageBack() {
+                        if (pageCurrent > 1) {
+                            pageCurrent--;
+                            movePage(pageCurrent);
+                        }
+                    }
+
+                    function pageNext() {
+                        if (pageCurrent < totalPages) {
+                            pageCurrent++;
+                            movePage(pageCurrent);
+                        }
+                    }
+
+                    function pageLast() {
+                        pageCurrent = totalPages;
+                        movePage(pageCurrent);
+                    }
+
+                    function  movePage(page) {
+                        var end = page * itensPerPage;
+                        var init = end - itensPerPage;
+
+                        for (var i = 0; i < tbody.length; i++) {
+                            let tr = tbody[i];
+                            if (i >= init && i < end) {
+                                tr.removeAttribute("hidden");
+                            } else {
+                                tr.setAttribute("hidden", true);
+                            }
+                        }
+                    }
+
+                    /*]]>*/
+                </script>
+
+            </ui:define>	
+        </ui:composition>
+    </ui:composition>
+</html>

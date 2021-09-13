@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:composition> 
+
+        <h:messages id="id-message" infoClass="info" errorClass="error" warnClass="warn" style="display: none"/>
+
+        <div class="alert alert-dismissible fade show" role="alert" style="display: none">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <script type="text/javascript">
+            /*<![CDATA[*/
+
+            var message = document.querySelector("body > div > ul > li");
+            var messageBoots = document.querySelector("body > div > div");
+
+            if (message !== null) {
+                var info = message.classList.contains("info");
+                var error = message.classList.contains("error");
+                var warn = message.classList.contains("warn");
+                messageBoots.append(message.innerHTML);
+
+                if (info) {
+                    messageBoots.classList.add("alert-primary");
+                }
+                if (error) {
+                    messageBoots.classList.add("alert-danger");
+                }
+
+                if (warn) {
+                    messageBoots.classList.add("alert-warning");
+                }
+                messageBoots.style.display = "block";
+            }
+
+            function showMessage(text, type) {
+                var clazz = "";
+                if (type === "info") {
+                    clazz = "alert-primary";
+                } else if (type === "error") {
+                    clazz = "alert-danger";
+                } else {
+                    clazz = "alert-warning";
+                }
+                var message = document.querySelector("#id-message");
+                message.innerHTML = "<div class='alert " + clazz + " alert-dismissible fade show' role='alert'>\n\
+                                 " + text + " \n\
+                               <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
+            }
+
+            function closeModal(show, text, type) {
+                document.querySelector("#btn-close-modal").click();
+                document.location.reload(true);
+                if (show) {
+                    setTimeout(function () {
+                        showMessage(text, type);
+                    }, 100);
+                }
+            }
+            
+            
+            /*]]>*/
+        </script>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition>
+        <ui:composition template="/template/layout.xhtml">	
+            <ui:define name="content">
+                <h:body>
+
+                    <h:form id="form-cadastrar-bloco">
+                        <div class="row-cols-1" style="margin-top: 15px;">
+                            <h5>Cadastrar nova torre</h5>
+                            <hr style="margin-top: -5px;"/>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h:outputLabel for="id-bloco" value="Identificação da torre"/>
+                                <h:inputText id="id-bloco" class="form-control" onkeypress="return onlyLetter(event);" onkeyup="toUpperCase(this);" maxlength="1" style="text-transform: uppercase"
+                                             value="#{cadastrarTorreBean.helper.descricaoTorre}"/>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h:outputLabel for="id-andares" value="Quantidade de andares"/>
+                                <h:inputText id="id-andares" class="form-control" onkeypress="return onlyNumber(event);" maxlength="2"
+                                             value="#{cadastrarTorreBean.helper.andares}"/>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h:outputLabel for="id-apart-andares" value="Quantidade de apartamentos por andares"/>
+                                <h:inputText id="id-apart-andares" class="form-control" onkeypress="return onlyNumber(event);" maxlength="1"
+                                             value="#{cadastrarTorreBean.helper.apartamentos}"/>
+                            </div>
+                        </div>
+
+                        <div class="row-cols-1">
+                            <hr style="margin-bottom: 5px;"/>
+                        </div>
+
+                        <div class="row row-cols-2">
+                            <div class="col force-left">
+                                <h:commandButton class="btn btn-primary" value="Voltar" action="#"/> 
+                            </div>
+                            <div class="col force-right">
+                                <h:commandButton class="btn btn-primary" value="Gravar" action="#{cadastrarTorreBean.gravar()}"/>
+                            </div>
+                        </div>
+
+
+                    </h:form>
+
+                </h:body>
+            </ui:define>	
+        </ui:composition>
+    </ui:composition>
+</html>
